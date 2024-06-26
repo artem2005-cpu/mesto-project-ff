@@ -8,26 +8,27 @@
 
 // @todo: Вывести карточки на страницу
 
-const createCard = () => {
-	const cards = initialCards.concat()
-	cards.forEach(element => {
-		addCard(element.link, element.name)
-	})
-}
-
-const addCard = (link, name) => {
-	const placesList = document.querySelector('.places__list')
+const placesList = document.querySelector('.places__list')
+const createCard = (link, name) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
-		.content.cloneNode(true)
+		.content.querySelector('.card')
+		.cloneNode(true)
 	const cardImage = cardTemplate.querySelector('.card__image')
 	const cardName = cardTemplate.querySelector('.card__title')
-	const removeButton = cardTemplate.querySelector('.card__delete-button')
 	cardImage.src = link
 	cardName.textContent = name
-	removeButton.addEventListener('click', () =>
-		removeButton.closest('.card').remove()
-	)
-	placesList.append(cardTemplate)
+	return cardTemplate
 }
-createCard()
+initialCards.forEach(cardData => {
+	const cardElement = createCard(cardData.link, cardData.name)
+	placesList.append(cardElement)
+})
+function deleteCard(event) {
+	const card = event.target.closest('.card')
+	card.remove()
+}
+const deleteButtons = document.querySelectorAll('.card__delete-button')
+deleteButtons.forEach(button => {
+	button.addEventListener('click', deleteCard)
+})
