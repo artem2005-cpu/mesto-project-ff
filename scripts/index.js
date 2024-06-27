@@ -16,8 +16,10 @@ const createCard = (link, name) => {
 		.cloneNode(true)
 	const cardImage = cardTemplate.querySelector('.card__image')
 	const cardName = cardTemplate.querySelector('.card__title')
+	const deleteButtons = cardTemplate.querySelector('.card__delete-button')
 	cardImage.src = link
 	cardName.textContent = name
+	deleteButtons.addEventListener('click', deleteCard)
 	return cardTemplate
 }
 initialCards.forEach(cardData => {
@@ -28,7 +30,3 @@ function deleteCard(event) {
 	const card = event.target.closest('.card')
 	card.remove()
 }
-const deleteButtons = document.querySelectorAll('.card__delete-button')
-deleteButtons.forEach(button => {
-	button.addEventListener('click', deleteCard)
-})
