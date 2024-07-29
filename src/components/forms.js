@@ -9,7 +9,8 @@ import {
 	profileDescription,
 	profileTitle,
 } from '../scripts/index.js'
-import { createCard } from './card.js'
+import { createCard, likeCard } from './card.js'
+import { openPopup } from './modal.js'
 function handleFormSubmit(evt) {
 	evt.preventDefault()
 	profileTitle.textContent = nameInput.value
@@ -19,7 +20,12 @@ function handleFormSubmit(evt) {
 
 function handleAddFormSubmit(evt) {
 	evt.preventDefault()
-	const newCard = createCard(linkInput.value, placeInput.value)
+	const newCard = createCard(
+		linkInput.value,
+		placeInput.value,
+		likeCard,
+		openPopup
+	)
 	placesList.prepend(newCard)
 	newPop.classList.remove('popup_is-opened')
 }
