@@ -57,7 +57,11 @@ export {
 	editPop,
 	imgPop,
 	jobInput,
+	linkInput,
 	nameInput,
+	newPop,
+	placeInput,
+	placesList,
 	profileDescription,
 	profileTitle,
 }

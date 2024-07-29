@@ -1,10 +1,15 @@
 import {
 	editPop,
 	jobInput,
+	linkInput,
 	nameInput,
+	newPop,
+	placeInput,
+	placesList,
 	profileDescription,
 	profileTitle,
 } from '../scripts/index.js'
+import { createCard } from './card.js'
 function handleFormSubmit(evt) {
 	evt.preventDefault()
 	profileTitle.textContent = nameInput.value
