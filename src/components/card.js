@@ -1,4 +1,6 @@
-import { imgPop } from '../scripts/index.js'
+const editPop = document.querySelector('.popup_type_edit')
+const imgPop = document.querySelector('.popup_type_image')
+const placesList = document.querySelector('.places__list')
 const createCard = (link, name, like, openPopup) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
@@ -23,4 +25,4 @@ function deleteCard(event) {
 function likeCard(evt) {
 	evt.classList.toggle('card__like-button_is-active')
 }
-export { createCard, likeCard }
+export { createCard, editPop, imgPop, likeCard, placesList }

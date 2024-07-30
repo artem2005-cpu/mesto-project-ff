@@ -1,18 +1,19 @@
+import { editPop, imgPop } from './card.js'
 import {
-	editPop,
-	imgPop,
 	jobInput,
 	nameInput,
 	profileDescription,
 	profileTitle,
-} from '../scripts/index.js'
+} from './forms.js'
+const newPop = document.querySelector('.popup_type_new-card')
+
 function openPopup(pop, link = null, name = null) {
 	pop.classList.add('popup_is-animated')
 	setTimeout(() => {
-		pop.classList.toggle('popup_is-opened')
+		pop.classList.add('popup_is-opened')
 		const escapeListener = evt => {
 			if (evt.key === 'Escape') {
-				pop.classList.remove('popup_is-opened')
+				closePopup(pop)
 				document.removeEventListener('keydown', escapeListener)
 			}
 		}
@@ -30,6 +31,13 @@ function openPopup(pop, link = null, name = null) {
 				pop.classList.remove('popup_is-opened')
 			}
 		})
+		const closePop = pop.querySelector('.popup__close')
+		closePop.addEventListener('click', () => {
+			closePopup(pop)
+		})
 	})
 }
-export { openPopup }
+function closePopup(pop) {
+	pop.classList.remove('popup_is-opened')
+}
+export { closePopup, newPop, openPopup }

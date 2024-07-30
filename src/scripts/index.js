@@ -8,41 +8,32 @@
 
 // @todo: Вывести карточки на страницу
 
-import { createCard, likeCard } from '../components/card.js'
-import { handleAddFormSubmit, handleFormSubmit } from '../components/forms.js'
-import { openPopup } from '../components/modal.js'
+import {
+	createCard,
+	editPop,
+	likeCard,
+	placesList,
+} from '../components/card.js'
+import {
+	addForm,
+	editProfileForm,
+	handleAddFormSubmit,
+	handleFormSubmit,
+} from '../components/forms.js'
+import { newPop, openPopup } from '../components/modal.js'
 import '../pages/index.css'
 import { initialCards } from './cards.js'
-const placesList = document.querySelector('.places__list')
 
-const editBtn = document.querySelector('.profile__edit-button')
-const editPop = document.querySelector('.popup_type_edit')
-const addBtn = document.querySelector('.profile__add-button')
-const newPop = document.querySelector('.popup_type_new-card')
-const imgPop = document.querySelector('.popup_type_image')
-const profileTitle = document.querySelector('.profile__title')
-const profileDescription = document.querySelector('.profile__description')
+const profileEditBtn = document.querySelector('.profile__edit-button')
 
-editBtn.addEventListener('click', () => openPopup(editPop))
-addBtn.addEventListener('click', () => openPopup(newPop))
-const profileForm = document.querySelector('[name="edit-profile"]')
-const nameInput = profileForm.querySelector('.popup__input_type_name')
-const jobInput = profileForm.querySelector('.popup__input_type_description')
-const addForm = document.querySelector('[name="new-place"]')
-const placeInput = addForm.querySelector('.popup__input_type_card-name')
-const linkInput = addForm.querySelector('.popup__input_type_url')
+const profileAddBtn = document.querySelector('.profile__add-button')
 
-profileForm.addEventListener('submit', handleFormSubmit)
+profileEditBtn.addEventListener('click', () => openPopup(editPop))
+profileAddBtn.addEventListener('click', () => openPopup(newPop))
+
+editProfileForm.addEventListener('submit', handleFormSubmit)
 
 addForm.addEventListener('submit', handleAddFormSubmit)
-const closePop = document.querySelectorAll('.popup__close')
-closePop.forEach(close => {
-	close.addEventListener('click', () => {
-		editPop.classList.remove('popup_is-opened')
-		newPop.classList.remove('popup_is-opened')
-		imgPop.classList.remove('popup_is-opened')
-	})
-})
 
 initialCards.forEach(cardData => {
 	const cardElement = createCard(
@@ -53,15 +44,3 @@ initialCards.forEach(cardData => {
 	)
 	placesList.append(cardElement)
 })
-export {
-	editPop,
-	imgPop,
-	jobInput,
-	linkInput,
-	nameInput,
-	newPop,
-	placeInput,
-	placesList,
-	profileDescription,
-	profileTitle,
-}

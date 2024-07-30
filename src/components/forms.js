@@ -1,21 +1,20 @@
-import {
-	editPop,
-	jobInput,
-	linkInput,
-	nameInput,
-	newPop,
-	placeInput,
-	placesList,
-	profileDescription,
-	profileTitle,
-} from '../scripts/index.js'
-import { createCard, likeCard } from './card.js'
-import { openPopup } from './modal.js'
+import { createCard, editPop, likeCard, placesList } from './card.js'
+import { closePopup, newPop, openPopup } from './modal.js'
+const addForm = document.querySelector('[name="new-place"]')
+const editProfileForm = document.querySelector('[name="edit-profile"]')
+const profileTitle = document.querySelector('.profile__title')
+const placeInput = addForm.querySelector('.popup__input_type_card-name')
+const jobInput = editProfileForm.querySelector('.popup__input_type_description')
+const linkInput = addForm.querySelector('.popup__input_type_url')
+const nameInput = editProfileForm.querySelector('.popup__input_type_name')
+
+const profileDescription = document.querySelector('.profile__description')
+
 function handleFormSubmit(evt) {
 	evt.preventDefault()
 	profileTitle.textContent = nameInput.value
 	profileDescription.textContent = jobInput.value
-	editPop.classList.remove('popup_is-opened')
+	closePopup(editPop)
 }
 
 function handleAddFormSubmit(evt) {
@@ -27,6 +26,15 @@ function handleAddFormSubmit(evt) {
 		openPopup
 	)
 	placesList.prepend(newCard)
-	newPop.classList.remove('popup_is-opened')
+	closePopup(newPop)
 }
-export { handleAddFormSubmit, handleFormSubmit }
+export {
+	addForm,
+	editProfileForm,
+	handleAddFormSubmit,
+	handleFormSubmit,
+	jobInput,
+	nameInput,
+	profileDescription,
+	profileTitle,
+}
