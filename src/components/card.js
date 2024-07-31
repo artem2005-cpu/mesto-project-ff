@@ -12,6 +12,7 @@ const createCard = (link, name, like) => {
 	const likeButton = cardTemplate.querySelector('.card__like-button')
 	likeButton.addEventListener('click', () => like(likeButton))
 	cardImage.src = link
+	cardImage.alt = name
 	cardName.textContent = name
 
 	deleteButtons.addEventListener('click', deleteCard)
