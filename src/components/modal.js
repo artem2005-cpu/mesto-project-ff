@@ -31,8 +31,8 @@ function openPopup(pop, link = null, name = null) {
 				pop.classList.remove('popup_is-opened')
 			}
 		})
-		const closePop = pop.querySelector('.popup__close')
-		closePop.addEventListener('click', () => {
+		const closePopBtn = pop.querySelector('.popup__close')
+		closePopBtn.addEventListener('click', () => {
 			closePopup(pop)
 		})
 	})
@@ -40,4 +40,5 @@ function openPopup(pop, link = null, name = null) {
 function closePopup(pop) {
 	pop.classList.remove('popup_is-opened')
 }
+
 export { closePopup, newPop, openPopup }

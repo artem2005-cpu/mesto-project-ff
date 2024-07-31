@@ -11,6 +11,7 @@
 import {
 	createCard,
 	editPop,
+	imgPop,
 	likeCard,
 	placesList,
 } from '../components/card.js'
@@ -43,4 +44,11 @@ initialCards.forEach(cardData => {
 		openPopup
 	)
 	placesList.append(cardElement)
+})
+const cards = document.querySelectorAll('.card')
+
+cards.forEach(card => {
+	const link = card.querySelector('.card__image').src
+	const name = card.querySelector('.card__title').textContent
+	card.addEventListener('click', () => openPopup(imgPop, link, name))
 })

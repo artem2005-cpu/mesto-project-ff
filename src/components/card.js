@@ -1,7 +1,7 @@
 const editPop = document.querySelector('.popup_type_edit')
 const imgPop = document.querySelector('.popup_type_image')
 const placesList = document.querySelector('.places__list')
-const createCard = (link, name, like, openPopup) => {
+const createCard = (link, name, like) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
 		.content.querySelector('.card')
@@ -11,7 +11,6 @@ const createCard = (link, name, like, openPopup) => {
 	const deleteButtons = cardTemplate.querySelector('.card__delete-button')
 	const likeButton = cardTemplate.querySelector('.card__like-button')
 	likeButton.addEventListener('click', () => like(likeButton))
-	cardImage.addEventListener('click', () => openPopup(imgPop, link, name))
 	cardImage.src = link
 	cardName.textContent = name
 
