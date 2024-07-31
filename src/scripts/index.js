@@ -18,7 +18,7 @@ import {
 	addForm,
 	editProfileForm,
 	handleAddFormSubmit,
-	handleFormSubmit,
+	handleProfileFormSubmit,
 } from '../components/forms.js'
 import { newPop, openPopup } from '../components/modal.js'
 import '../pages/index.css'
@@ -31,7 +31,7 @@ const profileAddBtn = document.querySelector('.profile__add-button')
 profileEditBtn.addEventListener('click', () => openPopup(editPop))
 profileAddBtn.addEventListener('click', () => openPopup(newPop))
 
-editProfileForm.addEventListener('submit', handleFormSubmit)
+editProfileForm.addEventListener('submit', handleProfileFormSubmit)
 
 addForm.addEventListener('submit', handleAddFormSubmit)
 
