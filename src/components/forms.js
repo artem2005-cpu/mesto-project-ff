@@ -27,6 +27,8 @@ function handleAddFormSubmit(evt) {
 	)
 	placesList.prepend(newCard)
 	closePopup(newPop)
+	linkInput.value = ''
+	placeInput.value = ''
 }
 export {
 	addForm,
