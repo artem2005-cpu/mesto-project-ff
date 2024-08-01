@@ -8,20 +8,21 @@
 
 // @todo: Вывести карточки на страницу
 
-import {
-	createCard,
-	editPop,
-	imgPop,
-	likeCard,
-	placesList,
-} from '../components/card.js'
+import { createCard, likeCard } from '../components/card.js'
 import {
 	addForm,
+	editPop,
 	editProfileForm,
 	handleAddFormSubmit,
 	handleProfileFormSubmit,
+	jobInput,
+	nameInput,
+	newPop,
+	placesList,
+	profileDescription,
+	profileTitle,
 } from '../components/forms.js'
-import { newPop, openPopup } from '../components/modal.js'
+import { closePopup, handleEscape, openPopup } from '../components/modal.js'
 import '../pages/index.css'
 import { initialCards } from './cards.js'
 
@@ -29,26 +30,34 @@ const profileEditBtn = document.querySelector('.profile__edit-button')
 
 const profileAddBtn = document.querySelector('.profile__add-button')
 
-profileEditBtn.addEventListener('click', () => openPopup(editPop))
-profileAddBtn.addEventListener('click', () => openPopup(newPop))
+profileEditBtn.addEventListener('click', () => {
+	openPopup(editPop)
+
+	nameInput.value = profileTitle.textContent
+	jobInput.value = profileDescription.textContent
+})
+profileAddBtn.addEventListener('click', () => {
+	openPopup(newPop)
+})
 
 editProfileForm.addEventListener('submit', handleProfileFormSubmit)
 
 addForm.addEventListener('submit', handleAddFormSubmit)
 
 initialCards.forEach(cardData => {
-	const cardElement = createCard(
-		cardData.link,
-		cardData.name,
-		likeCard,
-		openPopup
-	)
+	const cardElement = createCard(cardData.link, cardData.name, likeCard)
 	placesList.append(cardElement)
 })
-const cards = document.querySelectorAll('.card')
+const popups = document.querySelectorAll('.popup')
 
-cards.forEach(card => {
-	const link = card.querySelector('.card__image').src
-	const name = card.querySelector('.card__title').textContent
-	card.addEventListener('click', () => openPopup(imgPop, link, name))
+popups.forEach(popup => {
+	popup.addEventListener('mousedown', evt => {
+		if (evt.target.classList.contains('popup_is-opened')) {
+			closePopup(popup)
+		}
+		if (evt.target.classList.contains('popup__close')) {
+			closePopup(popup)
+		}
+	})
+	popup.addEventListener('keydown', evt => handleEscape(evt))
 })

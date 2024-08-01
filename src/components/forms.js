@@ -1,7 +1,11 @@
-import { createCard, editPop, likeCard, placesList } from './card.js'
-import { closePopup, newPop, openPopup } from './modal.js'
-const addForm = document.querySelector('[name="new-place"]')
-const editProfileForm = document.querySelector('[name="edit-profile"]')
+import { createCard, likeCard } from './card.js'
+import { closePopup, openPopup } from './modal.js'
+const addForm = document.forms['new-place']
+const newPop = document.querySelector('.popup_type_new-card')
+const editPop = document.querySelector('.popup_type_edit')
+
+const placesList = document.querySelector('.places__list')
+const editProfileForm = document.forms['edit-profile']
 const profileTitle = document.querySelector('.profile__title')
 const placeInput = addForm.querySelector('.popup__input_type_card-name')
 const jobInput = editProfileForm.querySelector('.popup__input_type_description')
@@ -27,16 +31,18 @@ function handleAddFormSubmit(evt) {
 	)
 	placesList.prepend(newCard)
 	closePopup(newPop)
-	linkInput.value = ''
-	placeInput.value = ''
+	addForm.reset()
 }
 export {
 	addForm,
+	editPop,
 	editProfileForm,
 	handleAddFormSubmit,
 	handleProfileFormSubmit,
 	jobInput,
 	nameInput,
+	newPop,
+	placesList,
 	profileDescription,
 	profileTitle,
 }

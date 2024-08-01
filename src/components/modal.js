@@ -1,44 +1,23 @@
-import { editPop, imgPop } from './card.js'
-import {
-	jobInput,
-	nameInput,
-	profileDescription,
-	profileTitle,
-} from './forms.js'
-const newPop = document.querySelector('.popup_type_new-card')
+const imgPop = document.querySelector('.popup_type_image')
 
-function openPopup(pop, link = null, name = null) {
+function openPopup(pop) {
 	pop.classList.add('popup_is-animated')
 	setTimeout(() => {
 		pop.classList.add('popup_is-opened')
-		const escapeListener = evt => {
-			if (evt.key === 'Escape') {
-				closePopup(pop)
-				document.removeEventListener('keydown', escapeListener)
-			}
-		}
-		if (pop === editPop) {
-			nameInput.value = profileTitle.textContent
-			jobInput.value = profileDescription.textContent
-		}
-		if (pop === imgPop) {
-			pop.querySelector('.popup__image').src = link
-			pop.querySelector('.popup__caption').textContent = name
-		}
-		document.addEventListener('keydown', escapeListener)
-		pop.addEventListener('click', evt => {
-			if (evt.target.classList.contains('popup')) {
-				pop.classList.remove('popup_is-opened')
-			}
-		})
-		const closePopBtn = pop.querySelector('.popup__close')
-		closePopBtn.addEventListener('click', () => {
-			closePopup(pop)
-		})
 	})
+
+	document.addEventListener('keydown', handleEscape)
 }
-function closePopup(pop) {
-	pop.classList.remove('popup_is-opened')
+function handleEscape(evt) {
+	if (evt.key === 'Escape') {
+		const openedPopup = document.querySelector('.popup_is-opened')
+		closePopup(openedPopup)
+	}
 }
 
-export { closePopup, newPop, openPopup }
+function closePopup(pop) {
+	pop.classList.remove('popup_is-opened')
+	document.removeEventListener('keydown', handleEscape)
+}
+
+export { closePopup, handleEscape, imgPop, openPopup }

@@ -1,6 +1,5 @@
-const editPop = document.querySelector('.popup_type_edit')
-const imgPop = document.querySelector('.popup_type_image')
-const placesList = document.querySelector('.places__list')
+import { imgPop, openPopup } from './modal.js'
+
 const createCard = (link, name, like) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
@@ -14,7 +13,11 @@ const createCard = (link, name, like) => {
 	cardImage.src = link
 	cardImage.alt = name
 	cardName.textContent = name
-
+	cardImage.addEventListener('click', () => {
+		openPopup(imgPop)
+		imgPop.querySelector('.popup__image').src = link
+		imgPop.querySelector('.popup__caption').textContent = name
+	})
 	deleteButtons.addEventListener('click', deleteCard)
 	return cardTemplate
 }
@@ -25,4 +28,4 @@ function deleteCard(event) {
 function likeCard(evt) {
 	evt.classList.toggle('card__like-button_is-active')
 }
-export { createCard, editPop, imgPop, likeCard, placesList }
+export { createCard, likeCard }
