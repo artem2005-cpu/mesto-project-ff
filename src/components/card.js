@@ -1,6 +1,4 @@
-import { imgPop, openPopup } from './modal.js'
-
-const createCard = (link, name, like) => {
+const createCard = (link, name, like, handleImageClick) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
 		.content.querySelector('.card')
@@ -13,11 +11,7 @@ const createCard = (link, name, like) => {
 	cardImage.src = link
 	cardImage.alt = name
 	cardName.textContent = name
-	cardImage.addEventListener('click', () => {
-		openPopup(imgPop)
-		imgPop.querySelector('.popup__image').src = link
-		imgPop.querySelector('.popup__caption').textContent = name
-	})
+	cardImage.addEventListener('click', () => handleImageClick(link, name))
 	deleteButtons.addEventListener('click', deleteCard)
 	return cardTemplate
 }

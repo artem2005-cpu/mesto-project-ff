@@ -1,5 +1,6 @@
+import { handleImageClick } from '../scripts/index.js'
 import { createCard, likeCard } from './card.js'
-import { closePopup, openPopup } from './modal.js'
+import { closePopup } from './modal.js'
 const addForm = document.forms['new-place']
 const newPop = document.querySelector('.popup_type_new-card')
 const editPop = document.querySelector('.popup_type_edit')
@@ -27,7 +28,7 @@ function handleAddFormSubmit(evt) {
 		linkInput.value,
 		placeInput.value,
 		likeCard,
-		openPopup
+		handleImageClick
 	)
 	placesList.prepend(newCard)
 	closePopup(newPop)

@@ -1,5 +1,3 @@
-const imgPop = document.querySelector('.popup_type_image')
-
 function openPopup(pop) {
 	pop.classList.add('popup_is-animated')
 	setTimeout(() => {
@@ -20,4 +18,4 @@ function closePopup(pop) {
 	document.removeEventListener('keydown', handleEscape)
 }
 
-export { closePopup, handleEscape, imgPop, openPopup }
+export { closePopup, handleEscape, openPopup }

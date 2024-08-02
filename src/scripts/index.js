@@ -22,10 +22,10 @@ import {
 	profileDescription,
 	profileTitle,
 } from '../components/forms.js'
-import { closePopup, handleEscape, openPopup } from '../components/modal.js'
+import { closePopup, openPopup } from '../components/modal.js'
 import '../pages/index.css'
 import { initialCards } from './cards.js'
-
+const imgPop = document.querySelector('.popup_type_image')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 
 const profileAddBtn = document.querySelector('.profile__add-button')
@@ -43,9 +43,20 @@ profileAddBtn.addEventListener('click', () => {
 editProfileForm.addEventListener('submit', handleProfileFormSubmit)
 
 addForm.addEventListener('submit', handleAddFormSubmit)
-
+function handleImageClick(link, name) {
+	openPopup(imgPop)
+	const img = imgPop.querySelector('.popup__image')
+	img.src = link
+	img.alt = name
+	imgPop.querySelector('.popup__caption').textContent = name
+}
 initialCards.forEach(cardData => {
-	const cardElement = createCard(cardData.link, cardData.name, likeCard)
+	const cardElement = createCard(
+		cardData.link,
+		cardData.name,
+		likeCard,
+		handleImageClick
+	)
 	placesList.append(cardElement)
 })
 const popups = document.querySelectorAll('.popup')
@@ -59,5 +70,6 @@ popups.forEach(popup => {
 			closePopup(popup)
 		}
 	})
-	popup.addEventListener('keydown', evt => handleEscape(evt))
 })
+
+export { handleImageClick, imgPop }
