@@ -8,6 +8,7 @@
 
 // @todo: Вывести карточки на страницу
 
+import { getUserInfo } from '../components/api.js'
 import { createCard, likeCard } from '../components/card.js'
 import {
 	addForm,
@@ -81,4 +82,5 @@ popups.forEach(popup => {
 })
 setEventListeners(editProfileForm)
 setEventListeners(addForm)
+getUserInfo()
 export { handleImageClick, imgPop }
