@@ -44,19 +44,29 @@
 					<h3 class="popup__title">Редактировать профиль</h3>
 					<form class="popup__form" name="edit-profile">
 						<input
+							id="name-input"
 							type="text"
 							name="name"
 							class="popup__input popup__input_type_name"
 							placeholder="Имя"
 							required
+							minlength="2"
+							maxlength="40"
+							data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
 						/>
+						<span class="input-error name-input-error"></span>
 						<input
+							id="job-input"
 							type="text"
 							name="description"
 							class="popup__input popup__input_type_description"
 							placeholder="Занятие"
 							required
+							minlength="2"
+							maxlength="200"
+							data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
 						/>
+						<span class="input-error job-input-error"></span>
 						<button type="submit" class="button popup__button">
 							Сохранить
 						</button>
@@ -69,19 +79,27 @@
 					<h3 class="popup__title">Новое место</h3>
 					<form class="popup__form" name="new-place">
 						<input
+							id="place-name-input"
 							type="text"
 							name="place-name"
 							class="popup__input popup__input_type_card-name"
 							placeholder="Название"
 							required
+							minlength="2"
+							maxlength="30"
+							data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
 						/>
+						<span class="input-error place-name-input-error"></span>
 						<input
+							id="link-input"
 							type="url"
 							name="link"
 							class="popup__input popup__input_type_url"
 							placeholder="Ссылка на картинку"
 							required
+							data-error-message="Здесь должна быть ссылка на изображение"
 						/>
+						<span class="input-error link-input-error"></span>
 						<button type="submit" class="button popup__button">
 							Сохранить
 						</button>

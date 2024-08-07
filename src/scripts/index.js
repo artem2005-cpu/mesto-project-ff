@@ -16,13 +16,16 @@ import {
 	handleAddFormSubmit,
 	handleProfileFormSubmit,
 	jobInput,
+	linkInput,
 	nameInput,
 	newPop,
+	placeInput,
 	placesList,
 	profileDescription,
 	profileTitle,
 } from '../components/forms.js'
 import { closePopup, openPopup } from '../components/modal.js'
+import { removeErrors, setEventListeners } from '../components/validation.js'
 import '../pages/index.css'
 import { initialCards } from './cards.js'
 const imgPop = document.querySelector('.popup_type_image')
@@ -31,12 +34,17 @@ const profileEditBtn = document.querySelector('.profile__edit-button')
 const profileAddBtn = document.querySelector('.profile__add-button')
 
 profileEditBtn.addEventListener('click', () => {
+	removeErrors(editProfileForm)
 	openPopup(editPop)
 
 	nameInput.value = profileTitle.textContent
 	jobInput.value = profileDescription.textContent
 })
 profileAddBtn.addEventListener('click', () => {
+	removeErrors(addForm)
+
+	linkInput.value = ''
+	placeInput.value = ''
 	openPopup(newPop)
 })
 
@@ -71,5 +79,6 @@ popups.forEach(popup => {
 		}
 	})
 })
-
+setEventListeners(editProfileForm)
+setEventListeners(addForm)
 export { handleImageClick, imgPop }
