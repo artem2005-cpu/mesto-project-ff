@@ -7,9 +7,7 @@
 // @todo: Функция удаления карточки
 
 // @todo: Вывести карточки на страницу
-
-import { getUserInfo } from '../components/api.js'
-import { createCard, likeCard } from '../components/card.js'
+import { getImages, getUserInfo } from '../components/api.js'
 import {
 	addForm,
 	editPop,
@@ -21,14 +19,12 @@ import {
 	nameInput,
 	newPop,
 	placeInput,
-	placesList,
 	profileDescription,
 	profileTitle,
 } from '../components/forms.js'
 import { closePopup, openPopup } from '../components/modal.js'
 import { removeErrors, setEventListeners } from '../components/validation.js'
 import '../pages/index.css'
-import { initialCards } from './cards.js'
 const imgPop = document.querySelector('.popup_type_image')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 
@@ -59,15 +55,7 @@ function handleImageClick(link, name) {
 	img.alt = name
 	imgPop.querySelector('.popup__caption').textContent = name
 }
-initialCards.forEach(cardData => {
-	const cardElement = createCard(
-		cardData.link,
-		cardData.name,
-		likeCard,
-		handleImageClick
-	)
-	placesList.append(cardElement)
-})
+
 const popups = document.querySelectorAll('.popup')
 
 popups.forEach(popup => {
@@ -82,5 +70,5 @@ popups.forEach(popup => {
 })
 setEventListeners(editProfileForm)
 setEventListeners(addForm)
-getUserInfo()
+Promise.all([getUserInfo(), getImages()]).catch(err => console.log(err))
 export { handleImageClick, imgPop }

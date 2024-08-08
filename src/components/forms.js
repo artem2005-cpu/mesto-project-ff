@@ -1,5 +1,4 @@
-import { handleImageClick } from '../scripts/index.js'
-import { createCard, likeCard } from './card.js'
+import { addNewCard, editingUserInfo } from './api.js'
 import { closePopup } from './modal.js'
 const addForm = document.forms['new-place']
 const newPop = document.querySelector('.popup_type_new-card')
@@ -17,20 +16,13 @@ const profileDescription = document.querySelector('.profile__description')
 
 function handleProfileFormSubmit(evt) {
 	evt.preventDefault()
-	profileTitle.textContent = nameInput.value
-	profileDescription.textContent = jobInput.value
+	editingUserInfo(nameInput.value, jobInput.value)
 	closePopup(editPop)
 }
 
 function handleAddFormSubmit(evt) {
 	evt.preventDefault()
-	const newCard = createCard(
-		linkInput.value,
-		placeInput.value,
-		likeCard,
-		handleImageClick
-	)
-	placesList.prepend(newCard)
+	addNewCard(placeInput.value, linkInput.value)
 	closePopup(newPop)
 	addForm.reset()
 }
