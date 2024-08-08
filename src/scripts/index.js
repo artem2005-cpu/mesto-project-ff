@@ -10,9 +10,12 @@
 import { getImages, getUserInfo } from '../components/api.js'
 import {
 	addForm,
+	editAvatarForm,
+	editAvatarPop,
 	editPop,
 	editProfileForm,
 	handleAddFormSubmit,
+	handleProfileAvatarFormSubmit,
 	handleProfileFormSubmit,
 	jobInput,
 	linkInput,
@@ -27,9 +30,13 @@ import { removeErrors, setEventListeners } from '../components/validation.js'
 import '../pages/index.css'
 const imgPop = document.querySelector('.popup_type_image')
 const profileEditBtn = document.querySelector('.profile__edit-button')
+const profileEditAvatarBtn = document.querySelector('.profile__image')
 
 const profileAddBtn = document.querySelector('.profile__add-button')
 
+profileEditAvatarBtn.addEventListener('click', () => {
+	openPopup(editAvatarPop)
+})
 profileEditBtn.addEventListener('click', () => {
 	removeErrors(editProfileForm)
 	openPopup(editPop)
@@ -44,7 +51,7 @@ profileAddBtn.addEventListener('click', () => {
 	placeInput.value = ''
 	openPopup(newPop)
 })
-
+editAvatarForm.addEventListener('submit', handleProfileAvatarFormSubmit)
 editProfileForm.addEventListener('submit', handleProfileFormSubmit)
 
 addForm.addEventListener('submit', handleAddFormSubmit)
@@ -70,5 +77,6 @@ popups.forEach(popup => {
 })
 setEventListeners(editProfileForm)
 setEventListeners(addForm)
+setEventListeners(editAvatarForm)
 Promise.all([getUserInfo(), getImages()]).catch(err => console.log(err))
 export { handleImageClick, imgPop }

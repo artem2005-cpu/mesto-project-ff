@@ -1,11 +1,14 @@
-import { userId } from './api.js'
+import { deleteCard, userId } from './api.js'
 const createCard = (
 	link,
 	name,
 	like,
+	deleteLikeCard,
 	handleImageClick,
 	likeCount,
-	userIdOfCard
+	userIdOfCard,
+	cardId,
+	elementLikes
 ) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
@@ -16,23 +19,28 @@ const createCard = (
 	const deleteButtons = cardTemplate.querySelector('.card__delete-button')
 	const likeButton = cardTemplate.querySelector('.card__like-button')
 	const likes = cardTemplate.querySelector('.card__like-counter')
-	likeButton.addEventListener('click', () => like(likeButton))
+	likeButton.addEventListener('click', () => like(likeButton, cardId))
+	likeButton.classList.remove('card__like-button_is-active')
+	elementLikes.forEach(element => {
+		if (element._id === userId) {
+			likeButton.classList.add('card__like-button_is-active')
+			likeButton.removeEventListener('click', () => like(likeButton, cardId))
+			likeButton.addEventListener('click', () =>
+				deleteLikeCard(likeButton, cardId)
+			)
+		}
+	})
+
 	cardImage.src = link
 	cardImage.alt = name
 	cardName.textContent = name
 	likes.textContent = likeCount
 	cardImage.addEventListener('click', () => handleImageClick(link, name))
-	deleteButtons.addEventListener('click', deleteCard)
+	deleteButtons.addEventListener('click', () => deleteCard(cardId))
 	if (userIdOfCard !== userId) {
 		deleteButtons.remove()
 	}
 	return cardTemplate
 }
-function deleteCard(event) {
-	const card = event.target.closest('.card')
-	card.remove()
-}
-function likeCard(evt) {
-	evt.classList.toggle('card__like-button_is-active')
-}
-export { createCard, likeCard }
+
+export { createCard }
