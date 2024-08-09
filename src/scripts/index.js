@@ -8,6 +8,7 @@
 
 // @todo: Вывести карточки на страницу
 import { getImages, getUserInfo } from '../components/api.js'
+import { createCard } from '../components/card.js'
 import {
 	addForm,
 	editAvatarForm,
@@ -22,7 +23,9 @@ import {
 	nameInput,
 	newPop,
 	placeInput,
+	placesList,
 	profileDescription,
+	profileImg,
 	profileTitle,
 } from '../components/forms.js'
 import { closePopup, openPopup } from '../components/modal.js'
@@ -54,7 +57,7 @@ profileAddBtn.addEventListener('click', () => {
 })
 editAvatarForm.addEventListener('submit', handleProfileAvatarFormSubmit)
 editProfileForm.addEventListener('submit', handleProfileFormSubmit)
-
+let userId = null
 addForm.addEventListener('submit', handleAddFormSubmit)
 function handleImageClick(link, name) {
 	openPopup(imgPop)
@@ -63,7 +66,28 @@ function handleImageClick(link, name) {
 	img.alt = name
 	imgPop.querySelector('.popup__caption').textContent = name
 }
-
+const avatar = document.querySelector('.profile__image')
+getUserInfo().then(data => {
+	profileTitle.textContent = data.name
+	profileDescription.textContent = data.about
+	profileImg.src = data.avatar
+	userId = data._id
+	avatar.style.backgroundImage = `url(${data.avatar})`
+})
+getImages().then(data => {
+	data.forEach(element => {
+		const cardElement = createCard(
+			element.link,
+			element.name,
+			handleImageClick,
+			element.likes.length,
+			element.owner._id,
+			element._id,
+			element.likes
+		)
+		placesList.append(cardElement)
+	})
+})
 const popups = document.querySelectorAll('.popup')
 
 popups.forEach(popup => {
@@ -80,4 +104,4 @@ setEventListeners(editProfileForm)
 setEventListeners(addForm)
 setEventListeners(editAvatarForm)
 Promise.all([getUserInfo(), getImages()]).catch(err => console.log(err))
-export { handleImageClick, imgPop }
+export { handleImageClick, imgPop, userId }

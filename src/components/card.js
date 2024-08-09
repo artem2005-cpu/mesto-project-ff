@@ -1,9 +1,16 @@
-import { deleteCard, deleteLikeCard, likeCard, userId } from './api.js'
+import { userId } from '../scripts/index.js'
+import { deleteCard, deleteLikeCard, likeCard } from './api.js'
 function setLikeEventListener(cardId, likeButton) {
 	if (likeButton.classList.contains('card__like-button_is-active')) {
-		deleteLikeCard(likeButton, cardId)
+		deleteLikeCard(likeButton, cardId).then(data => {
+			likeButton.classList.remove('card__like-button_is-active')
+			likeButton.nextElementSibling.textContent = data.likes.length
+		})
 	} else {
-		likeCard(likeButton, cardId)
+		likeCard(likeButton, cardId).then(data => {
+			likeButton.classList.add('card__like-button_is-active')
+			likeButton.nextElementSibling.textContent = data.likes.length
+		})
 	}
 }
 const createCard = (
@@ -42,7 +49,9 @@ const createCard = (
 	likes.textContent = likeCount
 	cardImage.addEventListener('click', () => handleImageClick(link, name))
 	deleteButtons.addEventListener('click', () =>
-		deleteCard(deleteButtons, cardId)
+		deleteCard(deleteButtons, cardId).then(() =>
+			deleteButtons.closest('.card').remove()
+		)
 	)
 	if (userIdOfCard !== userId) {
 		deleteButtons.remove()
