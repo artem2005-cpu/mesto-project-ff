@@ -7,52 +7,58 @@
 // @todo: Функция удаления карточки
 
 // @todo: Вывести карточки на страницу
-import { getImages, getUserInfo } from '../components/api.js'
-import { createCard } from '../components/card.js'
 import {
-	addForm,
-	editAvatarForm,
-	editAvatarPop,
-	editPop,
-	editProfileForm,
-	handleAddFormSubmit,
-	handleProfileAvatarFormSubmit,
-	handleProfileFormSubmit,
-	jobInput,
-	linkInput,
-	nameInput,
-	newPop,
-	placeInput,
-	placesList,
-	profileDescription,
-	profileImg,
-	profileTitle,
-} from '../components/forms.js'
+	addNewCard,
+	changeAvatar,
+	editingUserInfo,
+	getImages,
+	getUserInfo,
+} from '../components/api.js'
+import { createCard } from '../components/card.js'
+
 import { closePopup, openPopup } from '../components/modal.js'
-import { removeErrors, setEventListeners } from '../components/validation.js'
+import { clearValidation, enableValidation } from '../components/validation.js'
 import '../pages/index.css'
 const imgPop = document.querySelector('.popup_type_image')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const profileEditAvatarBtn = document.querySelector('.profile__image')
+const addForm = document.forms['new-place']
+const newPop = document.querySelector('.popup_type_new-card')
+const editPop = document.querySelector('.popup_type_edit')
 
+const placesList = document.querySelector('.places__list')
+const editProfileForm = document.forms['edit-profile']
+const profileTitle = document.querySelector('.profile__title')
+const placeInput = addForm.querySelector('.popup__input_type_card-name')
+const jobInput = editProfileForm.querySelector('.popup__input_type_description')
+const linkInput = addForm.querySelector('.popup__input_type_url')
+const editAvatarForm = document.forms['edit-profile-avatar']
+const editAvatarPop = document.querySelector('.popup_type_edit_avatar')
+const avatarInput = editAvatarForm.querySelector('.popup__input_type_url')
+const nameInput = editProfileForm.querySelector('.popup__input_type_name')
+const profileImg = document.querySelector('.profile__image')
+const profileDescription = document.querySelector('.profile__description')
+const validationConfig = {
+	formSelector: '.popup__form',
+	inputSelector: '.popup__input',
+	submitButtonSelector: '.popup__button',
+	inactiveButtonClass: 'popup__button_disabled',
+	inputErrorClass: 'popup__input_type_error',
+	errorClass: 'popup__error_visible',
+}
 const profileAddBtn = document.querySelector('.profile__add-button')
 
 profileEditAvatarBtn.addEventListener('click', () => {
-	setEventListeners(editAvatarForm)
 	openPopup(editAvatarPop)
 })
 profileEditBtn.addEventListener('click', () => {
-	removeErrors(editProfileForm)
-	openPopup(editPop)
-
 	nameInput.value = profileTitle.textContent
 	jobInput.value = profileDescription.textContent
+	clearValidation(editPop, validationConfig)
+	openPopup(editPop)
 })
 profileAddBtn.addEventListener('click', () => {
-	removeErrors(addForm)
-	setEventListeners(addForm)
-	linkInput.value = ''
-	placeInput.value = ''
+	clearValidation(newPop, validationConfig)
 	openPopup(newPop)
 })
 editAvatarForm.addEventListener('submit', handleProfileAvatarFormSubmit)
@@ -66,27 +72,49 @@ function handleImageClick(link, name) {
 	img.alt = name
 	imgPop.querySelector('.popup__caption').textContent = name
 }
-const avatar = document.querySelector('.profile__image')
-getUserInfo().then(data => {
-	profileTitle.textContent = data.name
-	profileDescription.textContent = data.about
-	profileImg.src = data.avatar
-	userId = data._id
-	avatar.style.backgroundImage = `url(${data.avatar})`
-})
-getImages().then(data => {
-	data.forEach(element => {
+function handleProfileAvatarFormSubmit(evt) {
+	evt.preventDefault()
+	changeAvatar(avatarInput.value).then(data => {
+		profileImg.style.backgroundImage = `url(${data.avatar})`
+		closePopup(editAvatarPop)
+	})
+	editAvatarForm.reset()
+}
+function handleProfileFormSubmit(evt) {
+	evt.preventDefault()
+	editingUserInfo(nameInput.value, jobInput.value).then(data => {
+		profileTitle.textContent = data.name
+		profileDescription.textContent = data.about
+		closePopup(editPop)
+	})
+}
+function handleAddFormSubmit(evt) {
+	evt.preventDefault()
+	addNewCard(placeInput.value, linkInput.value).then(data => {
 		const cardData = {
-			link: element.link,
-			name: element.name,
-			likes: element.likes,
-			owner: element.owner,
-			id: element._id,
+			link: data.link,
+			name: data.name,
+			likes: data.likes,
+			owner: data.owner,
+			id: data._id,
 		}
 		const cardElement = createCard(cardData, handleImageClick, userId)
-		placesList.append(cardElement)
+		placesList.prepend(cardElement)
+		closePopup(newPop)
 	})
-})
+	addForm.reset()
+}
+function loading(isLoading, formElement) {
+	const buttonElement = formElement.querySelector('.popup__button')
+	if (isLoading) {
+		buttonElement.textContent = 'Сохранение...'
+	} else {
+		buttonElement.textContent = 'Сохранить'
+	}
+}
+enableValidation(validationConfig)
+const avatar = document.querySelector('.profile__image')
+
 const popups = document.querySelectorAll('.popup')
 
 popups.forEach(popup => {
@@ -100,8 +128,31 @@ popups.forEach(popup => {
 		}
 	})
 })
-setEventListeners(editProfileForm)
-setEventListeners(addForm)
-setEventListeners(editAvatarForm)
-Promise.all([getUserInfo(), getImages()]).catch(err => console.log(err))
-export { handleImageClick, imgPop, userId }
+
+Promise.all([getUserInfo(), getImages()]).then(([data, cards]) => {
+	profileTitle.textContent = data.name
+	profileDescription.textContent = data.about
+	profileImg.src = data.avatar
+	userId = data._id
+	avatar.style.backgroundImage = `url(${data.avatar})`
+	cards.forEach(element => {
+		const cardData = {
+			link: element.link,
+			name: element.name,
+			likes: element.likes,
+			owner: element.owner,
+			id: element._id,
+		}
+		const cardElement = createCard(cardData, handleImageClick, userId)
+		placesList.append(cardElement)
+	})
+})
+export {
+	addForm,
+	editAvatarForm,
+	editProfileForm,
+	handleImageClick,
+	imgPop,
+	loading,
+	userId,
+}

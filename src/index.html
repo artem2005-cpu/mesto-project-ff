@@ -52,6 +52,7 @@
 							required
 							minlength="2"
 							maxlength="40"
+							pattern="^[a-zA-Zа-яА-я\-\s]+$"
 							data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
 						/>
 						<span class="input-error name-input-error"></span>
@@ -64,6 +65,7 @@
 							required
 							minlength="2"
 							maxlength="200"
+							pattern="^[a-zA-Zа-яА-я\-\s]+$"
 							data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
 						/>
 						<span class="input-error job-input-error"></span>
@@ -87,6 +89,7 @@
 							required
 							minlength="2"
 							maxlength="30"
+							pattern="^[a-zA-Zа-яА-Я\-\s]+$"
 							data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
 						/>
 						<span class="input-error place-name-input-error"></span>
@@ -97,7 +100,6 @@
 							class="popup__input popup__input_type_url"
 							placeholder="Ссылка на картинку"
 							required
-							data-error-message="Здесь должна быть ссылка на изображение"
 						/>
 						<span class="input-error link-input-error"></span>
 						<button type="submit" class="button popup__button">

@@ -1,4 +1,9 @@
-import { addForm, editAvatarForm, editProfileForm, loading } from './forms.js'
+import {
+	addForm,
+	editAvatarForm,
+	editProfileForm,
+	loading,
+} from '../scripts/index.js'
 const config = {
 	baseUrl: 'https://nomoreparties.co/v1/wff-cohort-19',
 	headers: {
