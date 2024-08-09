@@ -1,6 +1,7 @@
 import { handleImageClick } from '../scripts/index.js'
 import { createCard } from './card.js'
 import {
+	addForm,
 	editAvatarForm,
 	editProfileForm,
 	placesList,
@@ -63,8 +64,6 @@ function getImages() {
 				const cardElement = createCard(
 					element.link,
 					element.name,
-					likeCard,
-					deleteLikeCard,
 					handleImageClick,
 					element.likes.length,
 					element.owner._id,
@@ -87,11 +86,22 @@ function editingUserInfo(name, about) {
 			about: about,
 		}),
 	})
+		.then(res => {
+			if (res.ok) {
+				return res.json()
+			}
+			return Promise.reject(`Ошибка: ${res.status}`)
+		})
+		.then(data => {
+			profileTitle.textContent = data.name
+			profileDescription.textContent = data.about
+			getUserInfo()
+		})
 		.catch(err => console.log(err))
 		.finally(() => loading(false, editProfileForm))
 }
 function addNewCard(name, link) {
-	loading(true, addNewCardForm)
+	loading(true, addForm)
 	return fetch(`${config.baseUrl}/cards`, {
 		method: 'POST',
 		headers: config.headers,
@@ -100,15 +110,43 @@ function addNewCard(name, link) {
 			link: link,
 		}),
 	})
+		.then(res => {
+			if (res.ok) {
+				return res.json()
+			}
+			return Promise.reject(`Ошибка: ${res.status}`)
+		})
+		.then(data => {
+			const cardElement = createCard(
+				data.link,
+				data.name,
+				handleImageClick,
+				data.likes.length,
+				data.owner._id,
+				data._id,
+				data.likes
+			)
+			placesList.prepend(cardElement)
+		})
 		.catch(err => console.log(err))
-		.finally(() => loading(false, addNewCardForm))
+		.finally(() => loading(false, addForm))
 }
 
-function deleteCard(cardId) {
+function deleteCard(evt, cardId) {
 	return fetch(`${config.baseUrl}/cards/${cardId}`, {
 		method: 'DELETE',
 		headers: config.headers,
-	}).catch(err => console.log(err))
+	})
+		.then(res => {
+			if (res.ok) {
+				return res.json()
+			}
+			return Promise.reject(`Ошибка: ${res.status}`)
+		})
+		.then(() => {
+			evt.closest('.card').remove()
+		})
+		.catch(err => console.log(err))
 }
 function likeCard(evt, cardId) {
 	return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
@@ -124,8 +162,6 @@ function likeCard(evt, cardId) {
 		.then(data => {
 			evt.classList.add('card__like-button_is-active')
 			evt.nextElementSibling.textContent = data.likes.length
-			evt.removeEventListener('click', evt => likeCard(evt, cardId))
-			getImages()
 		})
 		.catch(err => console.log(err))
 }
@@ -144,8 +180,6 @@ function deleteLikeCard(evt, cardId) {
 		.then(data => {
 			evt.classList.remove('card__like-button_is-active')
 			evt.nextElementSibling.textContent = data.likes.length
-			evt.addEventListener('click', evt => likeCard(evt, cardId))
-			getImages()
 		})
 		.catch(err => console.log(err))
 }
@@ -159,6 +193,15 @@ function changeAvatar(avatar) {
 			avatar: avatar,
 		}),
 	})
+		.then(res => {
+			if (res.ok) {
+				return res.json()
+			}
+			return Promise.reject(`Ошибка: ${res.status}`)
+		})
+		.then(data => {
+			profileImg.style.backgroundImage = `url(${data.avatar})`
+		})
 		.catch(err => console.log(err))
 		.finally(() => loading(false, editAvatarForm))
 }

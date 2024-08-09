@@ -46,7 +46,7 @@ profileEditBtn.addEventListener('click', () => {
 })
 profileAddBtn.addEventListener('click', () => {
 	removeErrors(addForm)
-
+	setEventListeners(addForm)
 	linkInput.value = ''
 	placeInput.value = ''
 	openPopup(newPop)

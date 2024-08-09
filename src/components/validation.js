@@ -28,7 +28,10 @@ function checkInputValidity(formElement, inputElement) {
 }
 function hasInvalidInput(inputList) {
 	return inputList.some(inputItem => {
-		return !inputItem.validity.valid
+		return (
+			!inputItem.validity.valid ||
+			inputItem.classList.contains('popup__input-error')
+		)
 	})
 }
 function toggleButtonState(inputList, buttonElement) {
