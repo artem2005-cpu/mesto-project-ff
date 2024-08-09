@@ -76,21 +76,21 @@ getUserInfo().then(data => {
 })
 getImages().then(data => {
 	data.forEach(element => {
-		const cardElement = createCard(
-			element.link,
-			element.name,
-			handleImageClick,
-			element.likes.length,
-			element.owner._id,
-			element._id,
-			element.likes
-		)
+		const cardData = {
+			link: element.link,
+			name: element.name,
+			likes: element.likes,
+			owner: element.owner,
+			id: element._id,
+		}
+		const cardElement = createCard(cardData, handleImageClick, userId)
 		placesList.append(cardElement)
 	})
 })
 const popups = document.querySelectorAll('.popup')
 
 popups.forEach(popup => {
+	popup.classList.add('popup_is-animated')
 	popup.addEventListener('mousedown', evt => {
 		if (evt.target.classList.contains('popup_is-opened')) {
 			closePopup(popup)

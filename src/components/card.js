@@ -1,4 +1,3 @@
-import { userId } from '../scripts/index.js'
 import { deleteCard, deleteLikeCard, likeCard } from './api.js'
 function setLikeEventListener(cardId, likeButton) {
 	if (likeButton.classList.contains('card__like-button_is-active')) {
@@ -13,15 +12,7 @@ function setLikeEventListener(cardId, likeButton) {
 		})
 	}
 }
-const createCard = (
-	link,
-	name,
-	handleImageClick,
-	likeCount,
-	userIdOfCard,
-	cardId,
-	elementLikes
-) => {
+const createCard = (cardData, handleImageClick, userId) => {
 	const cardTemplate = document
 		.querySelector('#card-template')
 		.content.querySelector('.card')
@@ -31,29 +22,27 @@ const createCard = (
 	const deleteButtons = cardTemplate.querySelector('.card__delete-button')
 	const likeButton = cardTemplate.querySelector('.card__like-button')
 	const likes = cardTemplate.querySelector('.card__like-counter')
-	let hasMineLike = false
-	elementLikes.forEach(element => {
+	cardData.likes.some(element => {
 		if (element._id === userId) {
-			hasMineLike = true
+			likeButton.classList.add('card__like-button_is-active')
 		}
 	})
-	if (hasMineLike) {
-		likeButton.classList.add('card__like-button_is-active')
-	}
 	likeButton.addEventListener('click', () => {
-		setLikeEventListener(cardId, likeButton)
+		setLikeEventListener(cardData.id, likeButton)
 	})
-	cardImage.src = link
-	cardImage.alt = name
-	cardName.textContent = name
-	likes.textContent = likeCount
-	cardImage.addEventListener('click', () => handleImageClick(link, name))
+	cardImage.src = cardData.link
+	cardImage.alt = cardData.name
+	cardName.textContent = cardData.name
+	likes.textContent = cardData.likes.length
+	cardImage.addEventListener('click', () =>
+		handleImageClick(cardData.link, cardData.name)
+	)
 	deleteButtons.addEventListener('click', () =>
-		deleteCard(deleteButtons, cardId).then(() =>
+		deleteCard(deleteButtons, cardData.id).then(() =>
 			deleteButtons.closest('.card').remove()
 		)
 	)
-	if (userIdOfCard !== userId) {
+	if (cardData.owner._id !== userId) {
 		deleteButtons.remove()
 	}
 	return cardTemplate

@@ -1,8 +1,5 @@
 function openPopup(pop) {
-	pop.classList.add('popup_is-animated')
-	setTimeout(() => {
-		pop.classList.add('popup_is-opened')
-	})
+	pop.classList.add('popup_is-opened')
 
 	document.addEventListener('keydown', handleEscape)
 }

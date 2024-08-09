@@ -1,4 +1,4 @@
-import { handleImageClick } from '../scripts/index.js'
+import { handleImageClick, userId } from '../scripts/index.js'
 import {
 	addNewCard,
 	changeAvatar,
@@ -44,15 +44,14 @@ function handleProfileAvatarFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
 	evt.preventDefault()
 	addNewCard(placeInput.value, linkInput.value).then(data => {
-		const cardElement = createCard(
-			data.link,
-			data.name,
-			handleImageClick,
-			data.likes.length,
-			data.owner._id,
-			data._id,
-			data.likes
-		)
+		const cardData = {
+			link: data.link,
+			name: data.name,
+			likes: data.likes,
+			owner: data.owner,
+			id: data._id,
+		}
+		const cardElement = createCard(cardData, handleImageClick, userId)
 		placesList.prepend(cardElement)
 		closePopup(newPop)
 	})

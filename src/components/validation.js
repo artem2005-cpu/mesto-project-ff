@@ -1,15 +1,15 @@
 function showInputError(formElement, inputElement, errorMessage) {
 	const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
 	errorElement.textContent = errorMessage
-
-	inputElement.classList.add('popup__input-error')
+	errorElement.classList.add('popup__error_visible')
+	inputElement.classList.add('popup__input_type_error')
 }
 
 function hideInputError(formElement, inputElement) {
 	const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
 	errorElement.textContent = ''
-
-	inputElement.classList.remove('popup__input-error')
+	errorElement.classList.remove('popup__error_visible')
+	inputElement.classList.remove('popup__input_type_error')
 }
 
 function checkInputValidity(formElement, inputElement) {
@@ -30,7 +30,7 @@ function hasInvalidInput(inputList) {
 	return inputList.some(inputItem => {
 		return (
 			!inputItem.validity.valid ||
-			inputItem.classList.contains('popup__input-error')
+			inputItem.classList.contains('popup__input_type_error')
 		)
 	})
 }
