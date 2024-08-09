@@ -35,6 +35,7 @@ const profileEditAvatarBtn = document.querySelector('.profile__image')
 const profileAddBtn = document.querySelector('.profile__add-button')
 
 profileEditAvatarBtn.addEventListener('click', () => {
+	setEventListeners(editAvatarForm)
 	openPopup(editAvatarPop)
 })
 profileEditBtn.addEventListener('click', () => {
