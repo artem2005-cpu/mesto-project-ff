@@ -1,5 +1,4 @@
 import { addNewCard, changeAvatar, editingUserInfo } from './api.js'
-import { closePopup } from './modal.js'
 const addForm = document.forms['new-place']
 const newPop = document.querySelector('.popup_type_new-card')
 const editPop = document.querySelector('.popup_type_edit')
@@ -20,18 +19,15 @@ const profileDescription = document.querySelector('.profile__description')
 function handleProfileFormSubmit(evt) {
 	evt.preventDefault()
 	editingUserInfo(nameInput.value, jobInput.value)
-	closePopup(editPop)
 }
 function handleProfileAvatarFormSubmit(evt) {
 	evt.preventDefault()
 	changeAvatar(avatarInput.value)
-	closePopup(editAvatarPop)
 	editAvatarForm.reset()
 }
 function handleAddFormSubmit(evt) {
 	evt.preventDefault()
 	addNewCard(placeInput.value, linkInput.value)
-	closePopup(newPop)
 	addForm.reset()
 }
 export {

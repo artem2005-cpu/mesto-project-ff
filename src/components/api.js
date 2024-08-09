@@ -3,11 +3,15 @@ import { createCard } from './card.js'
 import {
 	addForm,
 	editAvatarForm,
+	editAvatarPop,
+	editPop,
 	editProfileForm,
+	newPop,
 	placesList,
 	profileDescription,
 	profileTitle,
 } from './forms.js'
+import { closePopup } from './modal.js'
 const profileImg = document.querySelector('.profile__image')
 const config = {
 	baseUrl: 'https://nomoreparties.co/v1/wff-cohort-19',
@@ -95,6 +99,7 @@ function editingUserInfo(name, about) {
 		.then(data => {
 			profileTitle.textContent = data.name
 			profileDescription.textContent = data.about
+			closePopup(editPop)
 			getUserInfo()
 		})
 		.catch(err => console.log(err))
@@ -126,6 +131,7 @@ function addNewCard(name, link) {
 				data._id,
 				data.likes
 			)
+			closePopup(newPop)
 			placesList.prepend(cardElement)
 		})
 		.catch(err => console.log(err))
@@ -201,6 +207,7 @@ function changeAvatar(avatar) {
 		})
 		.then(data => {
 			profileImg.style.backgroundImage = `url(${data.avatar})`
+			closePopup(editAvatarPop)
 		})
 		.catch(err => console.log(err))
 		.finally(() => loading(false, editAvatarForm))
