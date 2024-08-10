@@ -49,6 +49,7 @@ const validationConfig = {
 const profileAddBtn = document.querySelector('.profile__add-button')
 
 profileEditAvatarBtn.addEventListener('click', () => {
+	clearValidation(editAvatarPop, validationConfig)
 	openPopup(editAvatarPop)
 })
 profileEditBtn.addEventListener('click', () => {
