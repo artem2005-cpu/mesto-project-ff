@@ -20,6 +20,7 @@ import { closePopup, openPopup } from '../components/modal.js'
 import { clearValidation, enableValidation } from '../components/validation.js'
 import '../pages/index.css'
 const imgPop = document.querySelector('.popup_type_image')
+const imgPopCaption = imgPop.querySelector('.popup__caption')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const profileEditAvatarBtn = document.querySelector('.profile__image')
 const addForm = document.forms['new-place']
@@ -71,7 +72,7 @@ function handleImageClick(link, name) {
 	const img = imgPop.querySelector('.popup__image')
 	img.src = link
 	img.alt = name
-	imgPop.querySelector('.popup__caption').textContent = name
+	imgPopCaption.textContent = name
 }
 function handleProfileAvatarFormSubmit(evt) {
 	evt.preventDefault()
@@ -113,9 +114,9 @@ function handleAddFormSubmit(evt) {
 			}
 			const cardElement = createCard(cardData, handleImageClick, userId)
 			placesList.prepend(cardElement)
-			closePopup(newPop)
 		})
 		.then(() => {
+			closePopup(newPop)
 			addForm.reset()
 		})
 		.catch(err => console.log(err))
