@@ -1,15 +1,19 @@
 import { deleteCard, deleteLikeCard, likeCard } from './api.js'
 function setLikeEventListener(cardId, likeButton) {
 	if (likeButton.classList.contains('card__like-button_is-active')) {
-		deleteLikeCard(likeButton, cardId).then(data => {
-			likeButton.classList.remove('card__like-button_is-active')
-			likeButton.nextElementSibling.textContent = data.likes.length
-		})
+		deleteLikeCard(likeButton, cardId)
+			.then(data => {
+				likeButton.classList.remove('card__like-button_is-active')
+				likeButton.nextElementSibling.textContent = data.likes.length
+			})
+			.catch(err => console.log(err))
 	} else {
-		likeCard(likeButton, cardId).then(data => {
-			likeButton.classList.add('card__like-button_is-active')
-			likeButton.nextElementSibling.textContent = data.likes.length
-		})
+		likeCard(likeButton, cardId)
+			.then(data => {
+				likeButton.classList.add('card__like-button_is-active')
+				likeButton.nextElementSibling.textContent = data.likes.length
+			})
+			.catch(err => console.log(err))
 	}
 }
 const createCard = (cardData, handleImageClick, userId) => {
@@ -38,9 +42,9 @@ const createCard = (cardData, handleImageClick, userId) => {
 		handleImageClick(cardData.link, cardData.name)
 	)
 	deleteButtons.addEventListener('click', () =>
-		deleteCard(deleteButtons, cardData.id).then(() =>
-			deleteButtons.closest('.card').remove()
-		)
+		deleteCard(deleteButtons, cardData.id)
+			.then(() => deleteButtons.closest('.card').remove())
+			.catch(err => console.log(err))
 	)
 	if (cardData.owner._id !== userId) {
 		deleteButtons.remove()

@@ -75,35 +75,51 @@ function handleImageClick(link, name) {
 }
 function handleProfileAvatarFormSubmit(evt) {
 	evt.preventDefault()
-	changeAvatar(avatarInput.value).then(data => {
-		profileImg.style.backgroundImage = `url(${data.avatar})`
-		closePopup(editAvatarPop)
-	})
-	editAvatarForm.reset()
+	loading(true, editAvatarForm)
+	changeAvatar(avatarInput.value)
+		.then(data => {
+			profileImg.style.backgroundImage = `url(${data.avatar})`
+		})
+		.then(() => {
+			closePopup(editAvatarPop)
+			editAvatarForm.reset()
+		})
+		.catch(err => console.log(err))
+		.finally(() => loading(false, editAvatarForm))
 }
 function handleProfileFormSubmit(evt) {
 	evt.preventDefault()
-	editingUserInfo(nameInput.value, jobInput.value).then(data => {
-		profileTitle.textContent = data.name
-		profileDescription.textContent = data.about
-		closePopup(editPop)
-	})
+	loading(true, editProfileForm)
+	editingUserInfo(nameInput.value, jobInput.value)
+		.then(data => {
+			profileTitle.textContent = data.name
+			profileDescription.textContent = data.about
+			closePopup(editPop)
+		})
+		.catch(err => console.log(err))
+		.finally(() => loading(false, editProfileForm))
 }
 function handleAddFormSubmit(evt) {
 	evt.preventDefault()
-	addNewCard(placeInput.value, linkInput.value).then(data => {
-		const cardData = {
-			link: data.link,
-			name: data.name,
-			likes: data.likes,
-			owner: data.owner,
-			id: data._id,
-		}
-		const cardElement = createCard(cardData, handleImageClick, userId)
-		placesList.prepend(cardElement)
-		closePopup(newPop)
-	})
-	addForm.reset()
+	loading(true, addForm)
+	addNewCard(placeInput.value, linkInput.value)
+		.then(data => {
+			const cardData = {
+				link: data.link,
+				name: data.name,
+				likes: data.likes,
+				owner: data.owner,
+				id: data._id,
+			}
+			const cardElement = createCard(cardData, handleImageClick, userId)
+			placesList.prepend(cardElement)
+			closePopup(newPop)
+		})
+		.then(() => {
+			addForm.reset()
+		})
+		.catch(err => console.log(err))
+		.finally(() => loading(false, addForm))
 }
 function loading(isLoading, formElement) {
 	const buttonElement = formElement.querySelector('.popup__button')
@@ -130,24 +146,26 @@ popups.forEach(popup => {
 	})
 })
 
-Promise.all([getUserInfo(), getImages()]).then(([data, cards]) => {
-	profileTitle.textContent = data.name
-	profileDescription.textContent = data.about
-	profileImg.src = data.avatar
-	userId = data._id
-	avatar.style.backgroundImage = `url(${data.avatar})`
-	cards.forEach(element => {
-		const cardData = {
-			link: element.link,
-			name: element.name,
-			likes: element.likes,
-			owner: element.owner,
-			id: element._id,
-		}
-		const cardElement = createCard(cardData, handleImageClick, userId)
-		placesList.append(cardElement)
+Promise.all([getUserInfo(), getImages()])
+	.then(([data, cards]) => {
+		profileTitle.textContent = data.name
+		profileDescription.textContent = data.about
+		profileImg.src = data.avatar
+		userId = data._id
+		avatar.style.backgroundImage = `url(${data.avatar})`
+		cards.forEach(element => {
+			const cardData = {
+				link: element.link,
+				name: element.name,
+				likes: element.likes,
+				owner: element.owner,
+				id: element._id,
+			}
+			const cardElement = createCard(cardData, handleImageClick, userId)
+			placesList.append(cardElement)
+		})
 	})
-})
+	.catch(err => console.log(err))
 export {
 	addForm,
 	editAvatarForm,

@@ -1,9 +1,3 @@
-import {
-	addForm,
-	editAvatarForm,
-	editProfileForm,
-	loading,
-} from '../scripts/index.js'
 const config = {
 	baseUrl: 'https://nomoreparties.co/v1/wff-cohort-19',
 	headers: {
@@ -22,22 +16,17 @@ function getUserInfo() {
 	return fetch(`${config.baseUrl}/users/me`, {
 		method: 'GET',
 		headers: config.headers,
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
+	}).then(res => getResponseData(res))
 }
 
 function getImages() {
 	return fetch(`${config.baseUrl}/cards`, {
 		method: 'GET',
 		headers: config.headers,
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
+	}).then(res => getResponseData(res))
 }
 
 function editingUserInfo(name, about) {
-	loading(true, editProfileForm)
 	return fetch(`${config.baseUrl}/users/me`, {
 		method: 'PATCH',
 		headers: config.headers,
@@ -45,13 +34,9 @@ function editingUserInfo(name, about) {
 			name: name,
 			about: about,
 		}),
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
-		.finally(() => loading(false, editProfileForm))
+	}).then(res => getResponseData(res))
 }
 function addNewCard(name, link) {
-	loading(true, addForm)
 	return fetch(`${config.baseUrl}/cards`, {
 		method: 'POST',
 		headers: config.headers,
@@ -59,10 +44,7 @@ function addNewCard(name, link) {
 			name: name,
 			link: link,
 		}),
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
-		.finally(() => loading(false, addForm))
+	}).then(res => getResponseData(res))
 }
 
 function deleteCard(evt, cardId) {
@@ -77,32 +59,24 @@ function likeCard(evt, cardId) {
 	return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
 		method: 'PUT',
 		headers: config.headers,
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
+	}).then(res => getResponseData(res))
 }
 
 function deleteLikeCard(evt, cardId) {
 	return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
 		method: 'DELETE',
 		headers: config.headers,
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
+	}).then(res => getResponseData(res))
 }
 
 function changeAvatar(avatar) {
-	loading(true, editAvatarForm)
 	return fetch(`${config.baseUrl}/users/me/avatar`, {
 		method: 'PATCH',
 		headers: config.headers,
 		body: JSON.stringify({
 			avatar: avatar,
 		}),
-	})
-		.then(res => getResponseData(res))
-		.catch(err => console.log(err))
-		.finally(() => loading(false, editAvatarForm))
+	}).then(res => getResponseData(res))
 }
 export {
 	addNewCard,
